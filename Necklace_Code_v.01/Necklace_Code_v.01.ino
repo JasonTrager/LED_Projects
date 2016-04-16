@@ -1,4 +1,5 @@
 #include <FastLED.h>
+#include "animation.h"
 #define LED_PIN     10
 #define LED_TYPE    WS2811
 #define COLOR_ORDER RGB
@@ -8,6 +9,9 @@
 #define NUM_LEDS    16
 CRGB leds[NUM_LEDS];
 CRGB buffer[NUM_LEDS];
+uint8_t counter = 1;
+
+
 // setup gets called once
 void setup() {
    // power-up sanity delay
@@ -18,11 +22,15 @@ void setup() {
   
   // set master brightness control
   FastLED.setBrightness(BRIGHTNESS);
+  
+  pinMode(3, INPUT_PULLUP);
+  attachInterrupt(0, Change_animation, FALLING);
 }
-// loop is called repeatedly forever
-void loop()
+
+
+void Animation_1()
 {
-  // fill 'leds' array with a rainbow, starting at
+    // fill 'leds' array with a rainbow, starting at
   // a slightly different color each time, to create motion.
   static uint8_t startIndex = 0;
   startIndex = startIndex + 1; /* higher = faster motion */
@@ -52,6 +60,44 @@ void loop()
   // insert a delay to keep the framerate modest (eg, 60 FPS).
   // delay takes milliseconds, to 1000/60 = about 60 FPS.
   delay(framerate/60);
+}
+
+void Animation_2()
+{
+    // fill 'leds' array with a rainbow, starting at
+  // a slightly different color each time, to create motion.
+  static uint8_t startIndex = 0;
+  startIndex = startIndex + 4; /* higher = faster motion */
   
+  
+  fill_rainbow(leds, NUM_LEDS, startIndex);
+  FastLED.show();
+  
+  // insert a delay to keep the framerate modest (eg, 60 FPS).
+  // delay takes milliseconds, to 1000/60 = about 60 FPS.
+  delay(framerate/60);
+}
+
+///Declare patterns and animation class
+Pattern Patternlist [] =
+{
+  Animation_1,
+  Animation_2
+};
+Animation animation (Patternlist);
+///
+void Change_animation()
+{
+  animation.iterate_animation();
+}
+
+// loop is called repeatedly forever
+void loop()
+{
+  animation.animate();
+  counter++;
+  if(counter==0){
+    Change_animation();
+  }
 }
 
