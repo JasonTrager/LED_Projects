@@ -10,6 +10,7 @@
 CRGB leds[NUM_LEDS];
 CRGB buffer[NUM_LEDS];
 uint8_t counter = 1;
+#include "Necklace_animations.h"
 
 
 // setup gets called once
@@ -28,63 +29,15 @@ void setup() {
 }
 
 
-void Animation_1()
-{
-    // fill 'leds' array with a rainbow, starting at
-  // a slightly different color each time, to create motion.
-  static uint8_t startIndex = 0;
-  startIndex = startIndex + 1; /* higher = faster motion */
-  
-  
-  fill_rainbow(leds, NUM_LEDS, startIndex);
-  
-  for(int i=0;i<NUM_LEDS;i=i+2)
-  {
-   leds[i]=CRGB::Black;
-  }  
- 
-  for(int z=0;z<NUM_LEDS;z++)
-   {
-      buffer[z]=leds[NUM_LEDS-z-1];
-    }
-  for(int y=0;y<NUM_LEDS;y++)
-  {
-      leds[y]+=buffer[y];
-      
-   }
-  
-  // tell FastLED to send the 'leds' buffer out to the
-  // actual LEDs
-  FastLED.show();
-  
-  // insert a delay to keep the framerate modest (eg, 60 FPS).
-  // delay takes milliseconds, to 1000/60 = about 60 FPS.
-  delay(framerate/60);
-}
-
-void Animation_2()
-{
-    // fill 'leds' array with a rainbow, starting at
-  // a slightly different color each time, to create motion.
-  static uint8_t startIndex = 0;
-  startIndex = startIndex + 4; /* higher = faster motion */
-  
-  
-  fill_rainbow(leds, NUM_LEDS, startIndex);
-  FastLED.show();
-  
-  // insert a delay to keep the framerate modest (eg, 60 FPS).
-  // delay takes milliseconds, to 1000/60 = about 60 FPS.
-  delay(framerate/60);
-}
 
 ///Declare patterns and animation class
 Pattern Patternlist [] =
 {
   Animation_1,
-  Animation_2
+  Animation_2,
+  random_ring
 };
-Animation animation (Patternlist);
+Animation animation (Patternlist,3);
 ///
 void Change_animation()
 {
@@ -95,9 +48,9 @@ void Change_animation()
 void loop()
 {
   animation.animate();
-  counter++;
+  /*counter++;
   if(counter==0){
     Change_animation();
-  }
+  }*/
 }
 
