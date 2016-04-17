@@ -1,4 +1,7 @@
-typedef void (*Pattern) (); //define the pattern class
+#ifndef ANIMATION_H
+#define ANIMATION_H
+
+//typedef void (*Pattern) (); //define the pattern class
 class Animation
 {
 /*
@@ -8,10 +11,18 @@ class Animation
 */
 
 	// Class Member Variables
+	// FRAMERATE, 
 	// These are initialized at startup
 	//int NUM_LEDS; // number of LEDS on the animation. May change this for multiple strips. Taken out for now. 
-	Pattern *Patternlist; // List of animation pattern functions
+	//Pattern *Patternlist; // List of animation pattern functions
 public:
+	//initialize
+	//inline virtual void begin(){ /*nothing*/ };
+	//step function must be implemented
+	virtual void step() = 0;
+};
+
+/*
 	Animation(Pattern List[], int numpatterns)
 	{
 		//NUM_LEDS = num;
@@ -19,7 +30,7 @@ public:
 		NUM_PATTERNS = numpatterns;
 		current_pattern=0;
 	}
-
+	virtual 
 	void animate()
 	{
 		Patternlist[current_pattern]();
@@ -34,9 +45,18 @@ public:
 			current_pattern++;
 		}
 	}
+	void set_current_animation(int pcode)
+	{
+		lastpattern = pcode;
+	}
+	int get_current_animation()
+	{
+		return(current_pattern)
+	}
 private:
 	int current_pattern;
 	int NUM_PATTERNS;
+	int lastpattern;
 };
-
-
+*/
+#endif
