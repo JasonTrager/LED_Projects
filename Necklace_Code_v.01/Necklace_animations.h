@@ -54,17 +54,19 @@ void random_ring()
 {
   int randomizer;
   for(int i=0; i<NUM_LEDS; i++){
-    leds[i]=leds[i] + CHSV((random(25)-random(50)),(random(25)-random(50)),(random(25)-random(50)));
+    leds[i]=leds[i] + CHSV(0,0,(random(25)-random(50)));
     randomizer = random(999);
     if(randomizer %2 ==0)
     {
-          leds[i].setHSV(random(25),random(25),random(25));
+          leds[i].setRGB(random(255),random(255),random(255));
 
     }
+    if(leds[i].getAverageLight()>180)
+      leds[i]=CRGB::Black;
   }
 
   FastLED.show();
-  delay(framerate/60);
+  delay(framerate);
 
 
 }
